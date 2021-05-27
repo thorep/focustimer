@@ -1,12 +1,25 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from "react";
+import { StyleSheet, Text, View, Platform } from "react-native";
+import { Focus } from "./src/features/focus/Focus";
+import { colors } from "./src/utils/colors";
+import { Timer } from "./src/features/timer/Timer";
+import { spacing } from "./src/utils/sizes";
 
 export default function App() {
+  const [focusSubject, setFocusSubject] = useState(null);
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      {focusSubject ? (
+        <Timer
+          focusSubject={focusSubject}
+          onTimerEnd={() => {
+            setFocusSubject(null);
+          }}
+        />
+      ) : (
+        <Focus addSubject={setFocusSubject} />
+      )}
     </View>
   );
 }
@@ -14,8 +27,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    paddingTop: Platform.OS === "ios" ? spacing.xxl : spacing.xxl,
+    backgroundColor: colors.darkBlue,
   },
 });
